@@ -5,5 +5,5 @@ import ru.hse.coursehse.app.R
 
 enum class LanguageCode(val code: String, @DrawableRes val flagIconRes: Int, val title: String) {
     ENGLISH("en", R.drawable.ic_flag_english, "English"),
-    RUSSIAN("ru", R.drawable.ic_flag_russian, " Russian"),
+    RUSSIAN("ru", R.drawable.ic_flag_russian, "Russian"),
 }

@@ -1,5 +1,7 @@
 package ru.hse.coursehse.app
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,11 +24,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ru.hse.coursehse.app.screen.camera.CameraScreen
 import ru.hse.coursehse.app.screen.favourite.FavouriteScreen
 import ru.hse.coursehse.app.screen.history.HistoryScreen
 import ru.hse.coursehse.app.screen.translation.TranslationScreen
@@ -43,6 +48,20 @@ class MainActivity : ComponentActivity() {
                 MainScreen()
             }
         }
+
+        val cameraPermission = Manifest.permission.CAMERA
+        val hasPermission = ContextCompat.checkSelfPermission(
+            this,
+            cameraPermission
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (!hasPermission) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(cameraPermission),
+                CAMERA_PERMISSION_REQUEST_CODE
+            )
+        }
     }
 
     @Composable
@@ -57,8 +76,7 @@ class MainActivity : ComponentActivity() {
                 navController = navController,
                 startDestination = "translate"
             ) {
-                /* composable("chat") {}
-                 composable("camera") {}*/
+                composable("camera") { CameraScreen() }
                 composable("translate") { TranslationScreen() }
                 composable("history") { HistoryScreen() }
                 composable("favourite") { FavouriteScreen() }
@@ -66,22 +84,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // private val Destinations = listOf("chat", "camera", "translate", "history", "favourite")
-    private val Destinations = listOf("translate", "history", "favourite")
+    private val Destinations = listOf("translate", "camera", "history", "favourite")
 
     @Composable
     fun BottomNavigationBar(navController: NavController) {
         var selectedItem by rememberSaveable { mutableIntStateOf(0) }
 
-        /*val icons = listOf(
-            ImageVector.vectorResource(R.drawable.ic_chat),
-            ImageVector.vectorResource(R.drawable.ic_camera),
-            ImageVector.vectorResource(R.drawable.ic_translate),
-            ImageVector.vectorResource(R.drawable.ic_history),
-            ImageVector.vectorResource(R.drawable.ic_favourite)
-        )*/
         val icons = listOf(
             ImageVector.vectorResource(R.drawable.ic_translate),
+            ImageVector.vectorResource(R.drawable.ic_camera),
             ImageVector.vectorResource(R.drawable.ic_history),
             ImageVector.vectorResource(R.drawable.ic_favourite),
         )
@@ -147,6 +158,10 @@ class MainActivity : ComponentActivity() {
 
         @Composable
         fun navigationIndicatorColor() = MaterialTheme.colorScheme.primaryContainer
+    }
+
+    companion object {
+        private const val CAMERA_PERMISSION_REQUEST_CODE = 100100
     }
 }
 

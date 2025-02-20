@@ -57,6 +57,13 @@ android {
 
 dependencies {
 
+    implementation(libs.google.text.recognition)
+
+    implementation(libs.camerax.core)
+    implementation(libs.camerax.camera2)
+    implementation(libs.camerax.view)
+    implementation(libs.camerax.lifecycle)
+
     implementation(libs.room.runtime)
     implementation(libs.androidx.room)
     ksp(libs.room.compiler)

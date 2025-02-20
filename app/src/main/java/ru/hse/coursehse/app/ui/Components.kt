@@ -114,7 +114,7 @@ fun LanguageSelector(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         FlagIcon(
-            iconRes = targetLanguage.flagIconRes,
+            iconRes = sourceLanguage.flagIconRes,
             onClick = {
                 isLeftIconSelected = true
                 showLanguageDialog = true
@@ -132,7 +132,7 @@ fun LanguageSelector(
         )
 
         FlagIcon(
-            iconRes = sourceLanguage.flagIconRes,
+            iconRes = targetLanguage.flagIconRes,
             onClick = {
                 isLeftIconSelected = false
                 showLanguageDialog = true
@@ -174,7 +174,6 @@ fun FlagIcon(iconRes: Int, onClick: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LanguageSelectionDialog(
     languages: List<LanguageCode>,
